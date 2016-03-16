@@ -26,7 +26,7 @@ def normaliseAuthors(author_str):
     """Attempt to normalise author names in last, first format.
 
     """
-    raw_authors = author_str.split('and')
+    raw_authors = author_str.split(' and ')
     authors = []
 
     for author in raw_authors:
