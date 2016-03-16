@@ -22,6 +22,52 @@ from codecs import open
 config = Config()
 
 
+def normaliseAuthors(author_str):
+    """Attempt to normalise author names in last, first format.
+
+    """
+    raw_authors = author_str.split('and')
+    authors = []
+
+    for author in raw_authors:
+        # Already has a comma; assume it has been put in the
+        # last, first form correctly.
+        if ',' in author:
+            authors.append(author.strip())
+            continue
+
+        names = [s.strip() for s in author.split()]
+
+        # Only one name; nothing to do.
+        if len(names) == 1:
+            authors.append(names[0])
+            continue
+
+        # Search for a 'von' part -- something starting with a lowercase letter.
+        index = None
+        for i in range(len(names)):
+            if names[i][0].islower():
+                index = i
+                break
+
+        # If no von part found, assume the last name is the single surname.
+        if index is None:
+            index = -1
+
+        # Generate two pieces.
+        first = ' '.join(names[:index])
+        last = ' '.join(names[index:])
+
+        # And the overall output.
+        if first:
+            authors.append(last + ', ' + first)
+        else:
+            authors.append(last)
+
+    # And normalised.
+    return ' and '.join(authors)
+
+
 def getNewName(src, bibtex, tag='', override_format=None):
     """
     Return the formatted name according to config for the given

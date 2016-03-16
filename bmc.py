@@ -59,6 +59,7 @@ def checkBibtex(filename, bibtex_string):
             bibtex = bibtexparser.loads(tmpfile.read().decode('utf-8')+"\n")
 
         bibtex = bibtex.entries_dict
+
         try:
             bibtex = bibtex[list(bibtex.keys())[0]]
         except (IndexError, KeyError):
@@ -66,12 +67,15 @@ def checkBibtex(filename, bibtex_string):
             bibtex_string = ''
             tools.rawInput("Press Enter to go back to editor.")
             continue
-        if('authors' not in bibtex and 'title' not in bibtex and 'year' not in
+        if('author' not in bibtex and 'title' not in bibtex and 'year' not in
            bibtex):
             tools.warning("Invalid bibtex entry")
             bibtex_string = ''
             tools.rawInput("Press Enter to go back to editor.")
             continue
+
+        if 'author' in bibtex:
+            bibtex['author'] = backend.normaliseAuthors(bibtex['author'])
 
         if old_filename is not False and 'file' not in bibtex:
             tools.warning("Invalid bibtex entry. No filename given.")
@@ -182,6 +186,8 @@ def addFile(src, filetype, manual, autoconfirm, tag, rename=True):
     if len(bibtex) > 0:
         bibtex_name = list(bibtex.keys())[0]
         bibtex = bibtex[bibtex_name]
+        if 'author' in bibtex:
+            bibtex['author'] = backend.normaliseAuthors(bibtex['author'])
         bibtex_string = tools.parsed2Bibtex(bibtex)
     else:
         bibtex_string = ''
