@@ -75,7 +75,7 @@ def checkBibtex(filename, bibtex_string):
             continue
 
         if 'author' in bibtex:
-            bibtex['author'] = backend.normaliseAuthors(bibtex['author'])
+            bibtex['author'] = backend.normalizeAuthors(bibtex['author'])
 
         if old_filename is not False and 'file' not in bibtex:
             tools.warning("Invalid bibtex entry. No filename given.")
@@ -187,7 +187,7 @@ def addFile(src, filetype, manual, autoconfirm, tag, rename=True):
         bibtex_name = list(bibtex.keys())[0]
         bibtex = bibtex[bibtex_name]
         if 'author' in bibtex:
-            bibtex['author'] = backend.normaliseAuthors(bibtex['author'])
+            bibtex['author'] = backend.normalizeAuthors(bibtex['author'])
         bibtex_string = tools.parsed2Bibtex(bibtex)
     else:
         bibtex_string = ''

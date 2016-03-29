@@ -22,8 +22,8 @@ from codecs import open
 config = Config()
 
 
-def normaliseAuthors(author_str):
-    """Attempt to normalise author names in last, first format.
+def normalizeAuthors(author_str):
+    """Attempt to normalize author names in last, first format.
 
     """
     raw_authors = author_str.split(' and ')
@@ -64,7 +64,7 @@ def normaliseAuthors(author_str):
         else:
             authors.append(last)
 
-    # And normalised.
+    # And normalized.
     return ' and '.join(authors)
 
 
